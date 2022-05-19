@@ -17,5 +17,6 @@ namespace HeroeAPI.Modelos
         public string first_appearance { get; set; }
 
         public string characters { get; set; }
+        public string imageId { get; set; }
     }
 }

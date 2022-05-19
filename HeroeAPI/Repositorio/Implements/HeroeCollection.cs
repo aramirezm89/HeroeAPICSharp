@@ -1,4 +1,5 @@
 using HeroeAPI.Modelos;
+using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Collections.Generic;
@@ -34,7 +35,9 @@ namespace HeroeAPI.Repositorio
 
         public async Task InsertHeroe(Heroe heroe)
         {
+ 
             await Collection.InsertOneAsync(heroe);
+           
         }
 
         public async Task UpdateHeroe(Heroe heroe)
