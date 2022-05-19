@@ -76,7 +76,7 @@ namespace HeroeAPI.Controllers
 
             var heroeInsertado = Collection.AsQueryable().Where(x => x.superhero.ToLower() == heroe.superhero).ToList();
 
-           return Ok(heroeInsertado);
+           return Ok(heroeInsertado[0]);
         }
 
         [HttpPut("{id}")]
