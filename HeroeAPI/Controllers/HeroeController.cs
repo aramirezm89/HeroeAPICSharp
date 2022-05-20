@@ -100,7 +100,7 @@ namespace HeroeAPI.Controllers
             return Created("created", true);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteHeroe(string id)
         {
             await _db.DeleteHeroe(id);
