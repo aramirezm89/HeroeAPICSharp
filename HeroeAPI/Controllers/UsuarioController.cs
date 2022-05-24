@@ -1,8 +1,10 @@
 ﻿using HeroeAPI.Modelos;
+using HeroeAPI.Modelos.DTO;
 using HeroeAPI.Repositorio;
 using HeroeAPI.Repositorio.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -26,6 +28,23 @@ namespace HeroeAPI.Controllers
         public async Task<IActionResult> GetAllUsers()
         {
             return Ok(await _db.GetAllUsuarios());
+        }
+
+        [HttpGet("login")]
+
+        public async Task<IActionResult> Login([FromQuery]LoginDTO login)
+        {
+         
+               var buscarUsuario = await Collection.AsQueryable().FirstOrDefaultAsync( x => x.usuario == login.usuario && x.pass == login.pass );
+
+                if (buscarUsuario != null)
+                {
+                    return Ok(buscarUsuario);
+                }
+              
+        
+
+            return BadRequest("Credenciales no validas");    
         }
 
 
