@@ -9,7 +9,7 @@ namespace HeroeAPI.Repositorio
 
         public MongoDbRepositorio()
         {
-            client = new MongoClient("mongodb://localhost:27017");
+            client = new MongoClient("mongodb+srv://aramirezm:ramirez1989@heroeappangular.bdmrk.mongodb.net/?retryWrites=true&w=majority");
             db = client.GetDatabase("ApiHeroe");
 
         }

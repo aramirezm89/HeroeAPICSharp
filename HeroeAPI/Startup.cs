@@ -1,3 +1,4 @@
+using HeroeAPI.Modelos;
 using HeroeAPI.Repositorio;
 using HeroeAPI.Repositorio.Implements;
 using HeroeAPI.Repositorio.Interfaces;
@@ -25,8 +26,8 @@ namespace HeroeAPI
 
             services.AddControllers();
 
-            services.AddScoped<IHeroeCollection, HeroeCollection>();
-            services.AddScoped<IUsuarioCollection, UsuarioCollection>();
+            services.AddScoped<IRepositorio<Heroe>, HeroeRepository>();
+            services.AddScoped<IRepositorio<Usuario>, UsuarioRepository>();
 
             services.AddCors(options =>
             {

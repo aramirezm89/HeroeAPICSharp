@@ -16,9 +16,9 @@ namespace HeroeAPI.Controllers
     {
         internal MongoDbRepositorio _respositorio = new MongoDbRepositorio();
         private IMongoCollection<Usuario> Collection;
-        private readonly IUsuarioCollection _db;
+        private readonly IRepositorio<Usuario> _db;
 
-        public UsuarioController(IUsuarioCollection db )
+        public UsuarioController(IRepositorio<Usuario> db )
         {
             this._db = db;
             Collection = _respositorio.db.GetCollection<Usuario>("Usuarios");
@@ -27,12 +27,12 @@ namespace HeroeAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllUsers()
         {
-            return Ok(await _db.GetAllUsuarios());
+            return Ok(await _db.GetAll());
         }
 
-        [HttpGet("login")]
+        [HttpPost("login")]
 
-        public async Task<IActionResult> Login([FromQuery]LoginDTO login)
+        public async Task<IActionResult> Login([FromBody]LoginDTO login)
         {
          
                var buscarUsuario = await Collection.AsQueryable().FirstOrDefaultAsync( x => x.usuario == login.usuario && x.pass == login.pass );
@@ -46,6 +46,23 @@ namespace HeroeAPI.Controllers
 
             return BadRequest("Credenciales no validas");    
         }
+        [HttpGet("{id}")]
+
+        public async Task<IActionResult> UserById(string id)
+        {
+
+            var buscarUsuario = await Collection.AsQueryable().FirstOrDefaultAsync(x => x.Id == id);
+
+            if (buscarUsuario != null)
+            {
+                return Ok(buscarUsuario);
+            }
+
+
+
+            return BadRequest("Credenciales no validas");
+        }
+
 
 
         [HttpPost]
@@ -62,8 +79,7 @@ namespace HeroeAPI.Controllers
                     return NotFound("Usuario duplicado");
                 }
 
-
-                await _db.InsertUsuario(usuario);
+                await _db.InsertEntity(usuario);
 
                 var usuarioInsertado = Collection.AsQueryable().Where(x => x.usuario == usuario.usuario).ToList();
 

@@ -7,40 +7,40 @@ using System.Threading.Tasks;
 
 namespace HeroeAPI.Repositorio
 {
-    public class HeroeCollection : IHeroeCollection
+    public class HeroeRepository : IRepositorio<Heroe>
     {
 
         internal MongoDbRepositorio _respositorio = new MongoDbRepositorio();
         private IMongoCollection<Heroe> Collection;
-        public HeroeCollection()
+        public HeroeRepository()
         {
             Collection = _respositorio.db.GetCollection<Heroe>("Heroe");
         }
-        public async Task DeleteHeroe(string id)
+        public async Task DeleteEntity(string id)
         {
             var filter = Builders<Heroe>.Filter.Eq(s => s.Id, new ObjectId(id).ToString());
             await Collection.DeleteOneAsync(filter);
         }
 
-        public async Task<List<Heroe>> GetAllHeroes()
+        public async Task<List<Heroe>> GetAll()
         {
             return await Collection.FindAsync(new BsonDocument()).Result.ToListAsync();
         }
 
-        public async Task<Heroe> GetHeroeById(string id)
+        public async Task<Heroe> GetEntityById(string id)
         {
             return await Collection.FindAsync(
               new BsonDocument { { "_id", new ObjectId(id) } }).Result.FirstAsync();
         }
 
-        public async Task InsertHeroe(Heroe heroe)
+        public async Task InsertEntity(Heroe heroe)
         {
  
             await Collection.InsertOneAsync(heroe);
            
         }
 
-        public async Task UpdateHeroe(Heroe heroe)
+        public async Task UpdateEntity(Heroe heroe)
         {
             var filter = Builders<Heroe>.Filter.Eq(s => s.Id, heroe.Id);
 

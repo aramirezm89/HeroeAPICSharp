@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 using System.Threading.Tasks;
 using System.Linq;
+using Microsoft.Extensions.Configuration;
 
 namespace HeroeAPI.Controllers
 {
@@ -12,10 +13,11 @@ namespace HeroeAPI.Controllers
     [ApiController]
     public class HeroeController : ControllerBase
     {
+         
         internal MongoDbRepositorio _respositorio = new MongoDbRepositorio();
         private IMongoCollection<Heroe> Collection;
-        private readonly IHeroeCollection _db;
-        public HeroeController(IHeroeCollection db)
+        private readonly IRepositorio<Heroe> _db;
+        public HeroeController(IRepositorio<Heroe> db)
         {
             this._db = db;
             Collection = _respositorio.db.GetCollection<Heroe>("Heroe");
@@ -24,13 +26,13 @@ namespace HeroeAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllHeroes()
         {
-            return Ok(await _db.GetAllHeroes());
+            return Ok(await _db.GetAll());
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetHeroe(string id)
         {
-            return Ok(await _db.GetHeroeById(id));
+            return Ok(await _db.GetEntityById(id));
         }
 
 
@@ -72,7 +74,7 @@ namespace HeroeAPI.Controllers
             }
 
 
-            await _db.InsertHeroe(heroe);
+            await _db.InsertEntity(heroe);
 
             var heroeInsertado = Collection.AsQueryable().Where(x => x.superhero.ToLower() == heroe.superhero).ToList();
 
@@ -95,7 +97,7 @@ namespace HeroeAPI.Controllers
 
             heroe.Id = new MongoDB.Bson.ObjectId(id).ToString();
 
-            await _db.UpdateHeroe(heroe);
+            await _db.UpdateEntity(heroe);
 
             return Created("created", true);
         }
@@ -103,7 +105,7 @@ namespace HeroeAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteHeroe(string id)
         {
-            await _db.DeleteHeroe(id);
+            await _db.DeleteEntity(id);
 
             return NoContent();
         }

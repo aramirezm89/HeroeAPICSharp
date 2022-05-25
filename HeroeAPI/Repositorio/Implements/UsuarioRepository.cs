@@ -7,37 +7,37 @@ using System.Threading.Tasks;
 
 namespace HeroeAPI.Repositorio.Implements
 {
-    public class UsuarioCollection : IUsuarioCollection
+    public class UsuarioRepository : IRepositorio<Usuario>
     {
         internal MongoDbRepositorio _respositorio = new MongoDbRepositorio();
         private IMongoCollection<Usuario> Collection;
-        public UsuarioCollection()
+        public UsuarioRepository()
         {
             Collection = _respositorio.db.GetCollection<Usuario>("Usuarios");
         }
-        public async Task DeleteUsuario(string id)
+        public async Task DeleteEntity(string id)
         {
             var filter = Builders<Usuario>.Filter.Eq(s => s.Id, new ObjectId(id).ToString());
             await Collection.DeleteOneAsync(filter);
         }
 
-        public async Task<List<Usuario>> GetAllUsuarios()
+        public async Task<List<Usuario>> GetAll()
         {
             return await Collection.FindAsync(new BsonDocument()).Result.ToListAsync();
         }
 
-        public async Task<Usuario> GetUsuarioById(string id)
+        public async Task<Usuario> GetEntityById(string id)
         {
             return await Collection.FindAsync(
               new BsonDocument { { "_id", new ObjectId(id) } }).Result.FirstAsync();
         }
 
-        public async Task InsertUsuario(Usuario usuario)
+        public async Task InsertEntity(Usuario usuario)
         {
             await Collection.InsertOneAsync(usuario);
         }
 
-        public async Task UpdateUsuario(Usuario usuario)
+        public async Task UpdateEntity(Usuario usuario)
         {
             var filter = Builders<Usuario>.Filter.Eq(s => s.Id, usuario.Id);
 
