@@ -24,7 +24,7 @@ namespace HeroeAPI.Repositorio
 
         public async Task<List<Heroe>> GetAll()
         {
-            return await Collection.FindAsync(new BsonDocument()).Result.ToListAsync();
+            return await Collection.Find(new BsonDocument()).SortBy(x => x.superhero).ThenBy(x => x.publisher).ToListAsync();
         }
 
         public async Task<Heroe> GetEntityById(string id)
