@@ -32,7 +32,7 @@ namespace HeroeAPI
             services.AddCors(options =>
             {
                 //esta variable guarda la URL del frontEnd declarada en el appsettings.json
-                var frontEndURL = Configuration.GetValue<string>("frontend_url");
+                var frontEndURL = Configuration.GetValue<string>("frontend_urlLocal");
 
                 options.AddDefaultPolicy(builder =>
           {

@@ -95,7 +95,7 @@ namespace HeroeAPI.Controllers
 
             }
 
-            heroe.Id = new MongoDB.Bson.ObjectId(id).ToString();
+           // heroe.Id = new MongoDB.Bson.ObjectId(id).ToString(); con esto se setea la id del heroe con el id que viene en la url
 
             await _db.UpdateEntity(heroe);
 
